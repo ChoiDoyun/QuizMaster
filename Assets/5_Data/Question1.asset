@@ -15,7 +15,7 @@ MonoBehaviour:
   question: 1+1
   answers:
   - 2
-  - 5
+  - "\uC548\uB155"
   - 1
   - 3
   correctAnswerIndex: 1
