@@ -33,10 +33,15 @@ public class Quiz : MonoBehaviour
     [SerializeField] TextMeshProUGUI socreText;
     ScoreKeeper scoreKeeper;
 
+    [Header("ProgressBar")]
+    [SerializeField] Slider progressBar;
+
     void Start()
     {
         timer = FindFirstObjectByType<Timer>();
         scoreKeeper = FindFirstObjectByType<ScoreKeeper>();
+        progressBar.maxValue = questions.Count;
+        progressBar.value = 0;
         GetNExtQuestion();
     }
 
@@ -50,8 +55,15 @@ public class Quiz : MonoBehaviour
 
         if (timer.loadNextQuestion)
         {
-            timer.loadNextQuestion = false;
-            GetNExtQuestion();
+            if (questions.Count <= 0)
+            {
+                GameManager.Instance.ShowEndSceen();
+            }
+            else
+            {
+                timer.loadNextQuestion = false;
+                GetNExtQuestion();
+            }
         }
 
         if (timer.isProblemTime == false && chooseAnswer == false)
@@ -73,7 +85,8 @@ public class Quiz : MonoBehaviour
         SetDefaultButtonSprites();
         GetRandomQuestion();
         OnDisplayQuestion();
-        scoreKeeper.IncrementQuestionSeen();    
+        scoreKeeper.IncrementQuestionSeen();
+        progressBar.value++;
     }
 
     private void GetRandomQuestion()
@@ -93,7 +106,6 @@ public class Quiz : MonoBehaviour
 
     private void OnDisplayQuestion()
     {
-        Debug.Log("Displaying question: " + currentQuestion.GetQuestion());
         questionText.text = currentQuestion.GetQuestion();
 
         for (int i = 0; i < answerButtons.Length; i++)
@@ -107,7 +119,7 @@ public class Quiz : MonoBehaviour
         chooseAnswer = true;
         DisplaySolution(index);
         timer.CancelTimer();
-        socreText.text = $"Score: " + scoreKeeper.CalculateScore() + "%";
+        socreText.text = $"Score: { scoreKeeper.CalculateScore()}%";
     }
 
     private void DisplaySolution(int index)
