@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Timer : MonoBehaviour
@@ -8,6 +9,7 @@ public class Timer : MonoBehaviour
 
     [HideInInspector] public bool isProblemTime = true;
     [HideInInspector] public float fillAmount;
+    [HideInInspector] public bool loadNextQuestion;
 
     private void Start()
     {
@@ -47,7 +49,13 @@ public class Timer : MonoBehaviour
             {
                 isProblemTime = true;
                 time = problemTIme;
+                loadNextQuestion = true;
             }
         }
+    }
+
+    public void CancelTimer()
+    {
+        time = 0;
     }
 }
